@@ -1,2 +1,5 @@
 # GoLand
-.idea
+.idea/
+mdbook
+go.mod
+go.sum
