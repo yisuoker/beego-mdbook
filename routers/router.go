@@ -1,13 +1,21 @@
 package routers
 
 import (
-	"mdbook/controllers"
 	"github.com/astaxie/beego"
+	"mdbook/controllers"
 )
 
 func init() {
-    beego.Router("/", &controllers.MainController{})
+	//beego.Router("/", &controllers.MainController{})
 
-    // test
-    beego.Router("/test/:id", &controllers.TestController{}, "*:Detail")
+	// test
+	beego.Router("/test/:id", &controllers.TestController{}, "*:Detail")
+
+	// home
+	beego.Router("/", &controllers.HomeController{}, "get:Index")
+
+	// login, register
+	beego.Router("/register", &controllers.AccountController{}, "*:Register")
+	beego.Router("/login", &controllers.AccountController{}, "*:Login")
+	beego.Router("/logout", &controllers.AccountController{}, "*:Logout")
 }

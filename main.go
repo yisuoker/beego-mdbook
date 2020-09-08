@@ -1,8 +1,9 @@
 package main
 
 import (
-	_ "mdbook/routers"
 	"github.com/astaxie/beego"
+	_ "mdbook/routers"
+	_ "mdbook/sysinit" // 调用 sysinit/init() 方法
 )
 
 func main() {
