@@ -31,12 +31,12 @@
                 <div class="col-xs-6 col-sm-3 col-md-2">
                     <dl class="manual-item-standard">
                         <dt>
-                            <a class="clearfix tooltips {{if gt $item.OrderIndex 0}}recommend-book{{end}}" href="{{urlfor "DocumentController.Index" ":key" $item.Identify}}" title="{{$item.BookName}}" target="_blank" >
+                            <a class="clearfix tooltips {{if gt $item.OrderIndex 0}}recommend-book{{end}}" href="{{urlfor "BooksController.Show" ":id" $item.BookId ":token" $item.PrivateToken ":tab" ""}}" title="{{$item.BookName}}" target="_blank" >
                                 <img class="img-responsive border-cover-img" onerror="this.src='/static/images/book.png'" src="{{showImg $item.Cover "cover"}}" class="cover" alt="{{$item.BookName}}">
                             </a>
                         </dt>
                         <dd>
-                            <a href="{{urlfor "DocumentController.Index" ":key" $item.Identify}}" class="name tooltips" title="{{$item.BookName}}" target="_blank">{{$item.BookName}}</a>
+                            <a href="{{urlfor "BooksController.Show" ":id" $item.BookId ":token" $item.PrivateToken ":tab" ""}}" class="name tooltips" title="{{$item.BookName}}" target="_blank">{{$item.BookName}}</a>
                         </dd>
                         {{/*<dd>*/}}
                             {{/*<span class="author">*/}}
@@ -51,9 +51,6 @@
                 <div class="clearfix"></div>
             </div>
             <nav class="pagination-container">
-                {{if gt .TotalPages 1}}
-                {{.PageHtml}}
-                {{end}}
                 <div class="clearfix"></div>
             </nav>
         </div>

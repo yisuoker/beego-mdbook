@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"fmt"
+	"github.com/astaxie/beego/orm"
+	"time"
+)
 
 type Documents struct {
 	DocumentId   int            `orm:"pk;auto;column(document_id)" json:"doc_id"`
@@ -22,4 +26,17 @@ type Documents struct {
 
 func (m *Documents) TableName() string {
 	return TNDocuments()
+}
+
+func (m *Documents) GetByBookId(bookId int) (docs []*Documents, err error) {
+	var docsAll []*Documents
+	o := orm.NewOrm()
+	cols := []string{"document_id", "document_name", "member_id", "parent_id", "book_id", "identify"}
+	fmt.Println("---------------start")
+	_, err = o.QueryTable(m.TableName()).Filter("book_id", bookId).Filter("parent_id", 0).OrderBy("order_sort", "document_id").Limit(5000).All(&docsAll, cols...)
+	fmt.Println("---------------end")
+	for _, doc := range docsAll {
+		docs = append(docs, doc)
+	}
+	return
 }

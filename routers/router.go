@@ -23,5 +23,5 @@ func init() {
 	beego.Router("/category/:id", &controllers.CategoryController{}, "get:Show")
 
 	// books
-	beego.Router("/books/:id", &controllers.BooksController{}, "get:Show")
+	beego.Router("/books/:id/?:token/?:tab", &controllers.BooksController{}, "get:Show")
 }
