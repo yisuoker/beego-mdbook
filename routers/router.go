@@ -18,4 +18,10 @@ func init() {
 	beego.Router("/register", &controllers.AccountController{}, "*:Register")
 	beego.Router("/login", &controllers.AccountController{}, "*:Login")
 	beego.Router("/logout", &controllers.AccountController{}, "*:Logout")
+
+	// category
+	beego.Router("/category/:id", &controllers.CategoryController{}, "get:Show")
+
+	// books
+	beego.Router("/books/:id", &controllers.BooksController{}, "get:Show")
 }
