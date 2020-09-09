@@ -114,6 +114,12 @@ func (c *AccountController) Login() {
 			fmt.Println(err)
 		}
 
+		// cookie && session
+		err = c.remember(member.MemberId)
+		if err != nil {
+			c.JsonResult(1, err.Error())
+		}
+
 		c.JsonResult(0, "登陆成功")
 	} else {
 		c.TplName = "account/login.html"

@@ -3,6 +3,7 @@ package controllers
 import (
 	"compress/gzip"
 	"encoding/json"
+	"fmt"
 	"github.com/astaxie/beego"
 	"io"
 	"mdbook/common"
@@ -32,6 +33,7 @@ func (c *BaseController) Prepare() {
 	//从session中获取用户信息
 	if member, ok := c.GetSession(common.SessionName).(models.Member); ok && member.MemberId > 0 {
 		c.Member = &member
+		fmt.Println("base/prepare session member ----------", c.Member)
 	} else {
 		//如果Cookie中存在登录信息，从cookie中获取用户信息
 		if cookie, ok := c.GetSecureCookie(common.AppKey(), "login"); ok {
@@ -42,6 +44,7 @@ func (c *BaseController) Prepare() {
 				if err == nil {
 					c.SetSessions(*member)
 					c.Member = member
+					fmt.Println("base/prepare cookie member ----------", c.Member)
 				}
 			}
 		}
