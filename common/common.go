@@ -83,6 +83,10 @@ func DefaultCover() string {
 	return beego.AppConfig.DefaultString("cover", "/static/images/book.jpg")
 }
 
+func DefaultBookIcon() string {
+	return beego.AppConfig.DefaultString("book_icon", "/static/images/icon.png")
+}
+
 //获取文件类型
 func getFileExt() []string {
 	ext := beego.AppConfig.DefaultString("upload_file_ext", "png|jpg|jpeg|gif|txt|doc|docx|pdf")

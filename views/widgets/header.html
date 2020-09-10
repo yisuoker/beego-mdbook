@@ -16,7 +16,7 @@
                     </li>
                 {{if eq .Member.Role 0 }}
                     <li>
-                        <a href="{{urlfor "ManagerController.Category"}}" title="管理"><i class="fa fa-university" aria-hidden="true"></i> 管理</a>
+                        <a href="{{urlfor "CategoryController.Settings"}}" title="管理"><i class="fa fa-university" aria-hidden="true"></i> 管理</a>
                     </li>
                 {{end}}
                     <li>
@@ -78,7 +78,7 @@
                         </li>
                         {{if eq .Member.Role 0  1}}
                         <li>
-                            <a href="{{urlfor "ManagerController.Category"}}" title="管理"><i class="fa fa-university" aria-hidden="true"></i> 管理</a>
+                            <a href="{{urlfor "CategoryController.Settings"}}" title="管理"><i class="fa fa-university" aria-hidden="true"></i> 管理</a>
                         </li>
                         {{end}}
                         <li>

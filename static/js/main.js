@@ -187,11 +187,45 @@ $(function () {
         })
     });
 
+    //ajax-click
+    $(document).on("click",".ajax-click",function (e) {
+        e.preventDefault();
+        if($(this).hasClass("confirm") && !confirm("您确定要执行该操作吗？")){
+            return true;
+        }
+        var _this=$(this),_url=_this.attr("data-url"),field=_this.attr("data-name"),value=_this.attr("data-value"),method=_this.attr("data-method");
+        if(method=="post"){
+            $.post(_url,{field:field,value:value},function (res) {
+                if(res.errcode==0){
+                    alertTips("success",res.message,3000,"");
+                }else{
+                    $(this).val($(this)[0].defaultValue);//恢复值
+                    alertTips("danger",res.message,3000,"");
+                }
+            })
+        }else{
+            $.get(_url,{field:field,value:$(this).val().trim()},function (res) {
+                if(res.errcode==0){
+                    alertTips("success",res.message,3000,"");
+                }else{
+                    $(this).val($(this)[0].defaultValue);//恢复值
+                    alertTips("error",res.message,3000,"");
+                }
+            })
+        }
+    });
+
     //ajax-form
     $(".ajax-form [type=submit]").click(function(e){
         e.preventDefault();
-        var _this=$(this),form=$(this).parents("form"),method=form.attr("method"),action=form.attr("action"),data=form.serialize(),_url=form.attr("data-url");
-        var require=form.find("[required=required]"),l=require.length;
+        var _this=$(this),
+            form=$(this).parents("form"),
+            method=form.attr("method"),
+            action=form.attr("action"),
+            data=form.serialize(),
+            _url=form.attr("data-url");
+        var require=form.find("[required=required]"),
+            l=require.length;
         $.each(require, function() {
             if (!$(this).val()){
                 $(this).focus();
