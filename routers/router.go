@@ -29,7 +29,7 @@ func init() {
 
 	// books
 	// TODO urlfor ?:token 正则路由怎么生成
-	beego.Router("/books/:id/?:token/?:tab", &controllers.BooksController{}, "get:Show")
+	beego.Router("/books/:id", &controllers.BooksController{}, "get:Show")
 
 	// members
 	beego.Router("/members/:id", &controllers.MembersController{}, "get:Index")

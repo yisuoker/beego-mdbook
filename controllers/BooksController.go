@@ -16,12 +16,12 @@ func (c *BooksController) Show() {
 
 	// id, tab, token
 	id, _ := c.GetInt(":id")
-	token := c.GetString(":token")
+	token := c.GetString("token")
 	fmt.Println("token----", token)
 	if id < 0 {
 		beego.Error("参数异常")
 	}
-	tab := c.GetString(":tab")
+	tab := c.GetString("tab")
 	if "" == tab {
 		tab = "default"
 	}
@@ -41,5 +41,6 @@ func (c *BooksController) Show() {
 	//c.Data["MyScore"]
 
 	c.Data["Tab"] = tab
+	c.Data["Token"] = token
 	c.TplName = "books/show.html"
 }

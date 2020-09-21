@@ -54,14 +54,14 @@
                             </form>
                             <div class="list-item clearfix" v-for="item in lists">
                                 <div class="col-sm-2 col-xs-12" style="padding-left: 0px">
-                                    <a :class="item.order_index ? 'recommend-book' : ''" :href="'{{urlfor "DocumentController.Index" ":key" ""}}' + item.identify" title="查看图书" data-toggle="tooltip">
+                                    <a :class="item.order_index ? 'recommend-book' : ''" :href="'{{urlfor "BooksController.Show" ":id" ""}}' + item.book_id" title="查看图书" data-toggle="tooltip">
                                         <img  onerror="this.src='/static/images/book.png'"  class="img-responsive border-cover-img" :src="item.cover" alt="">
                                     </a>
                                 </div>
                                 <div class="col-sm-10 col-xs-12" style="padding-right: 0px;padding-left: 0px;">
                                     <div class="book-title">
                                         <div class="pull-left">
-                                            <a :href="'{{urlfor "DocumentController.Index" ":key" ""}}' + item.identify" title="查看图书" data-toggle="tooltip">
+                                            <a :href="'{{urlfor "BooksController.Show" ":id" ""}}' + item.book_id" title="查看图书" data-toggle="tooltip">
                                                 <template v-if="item.privately_owned == 0">
                                                     <i class="fa fa-unlock" aria-hidden="true"></i>
                                                 </template>
@@ -93,7 +93,7 @@
                                     </div>
 
                                     <div class="btns">
-                                        <a :href="'{{urlfor "DocumentController.Index" ":key" ""}}' + item.identify" title="查看图书" class="btn btn-default btn-sm" data-toggle="tooltip" target="_blank"><i class="fa fa-eye"></i> 查看<span class="hidden-xs">图书</span></a>
+                                        <a :href="'{{urlfor "BooksController.Show" ":id" ""}}' + item.book_id" title="查看图书" class="btn btn-default btn-sm" data-toggle="tooltip" target="_blank"><i class="fa fa-eye"></i> 查看<span class="hidden-xs">图书</span></a>
                                         <template v-if="item.role_id != 3">
                                             <a :href="'/api/' + item.identify + '/edit'" title="编辑图书" data-toggle="tooltip" class="btn btn-default btn-sm"><i class="fa fa-edit" aria-hidden="true"></i> 编辑<span class="hidden-xs">图书</span></a>
                                         </template>
