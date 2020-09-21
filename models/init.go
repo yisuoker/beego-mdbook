@@ -12,6 +12,7 @@ func init() {
 		new(BookCategory),
 		new(Documents),
 		new(DocumentStore),
+		new(Relationship),
 	)
 }
 
@@ -46,4 +47,8 @@ func TNDocumentStore() string {
 
 func TNAttachments() string {
 	return "md_attachments"
+}
+
+func TNRelationship() string {
+	return "md_relationship"
 }

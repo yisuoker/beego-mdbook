@@ -6,7 +6,7 @@
                     <h3>{{.User.Nickname}}</h3>
                     <div class="help-block"><span class="text-muted">(@{{.User.Account}})</span></div>
                     {{if .IsSelf}}
-                        <div><a target="_blank" href="{{urlfor "SettingController.Index"}}"
+                        <div><a target="_blank" href="{{urlfor "MembersController.Settings" ":id" $.Member.MemberId}}"
                                 class="btn btn-success btn-sm"><i class="fa fa-cogs"></i> 个人设置</a></div>
                     {{else}}
 

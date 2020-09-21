@@ -124,6 +124,27 @@ func (m *Books) Show(id int, token string) (bd *BookData, err error) {
 	return
 }
 
+//根据用户id获取图书信息
+func (m *Books) GetByUserId(UserId int, private int) (books []*Books, err error) {
+	sql := "select book.*,rel.member_id,rel.role_id,m.account as create_name " +
+		"from " + m.TableName() + " as book " +
+		"left join " + new(Relationship).TableName() + " as rel on book.book_id=rel.book_id " +
+		"left join " + new(Member).TableName() + " as m on rel.member_id=m.member_id "
+	where := "where rel.role_id = 0 and rel.member_id = ? "
+	order := "order by book.book_id desc"
+	if private == 0 || private == 1 {
+		where += "and book.privately_owned= ? "
+		_, err = orm.NewOrm().Raw(sql+where+order, UserId, private).QueryRows(&books)
+	} else {
+		_, err = orm.NewOrm().Raw(sql+where+order, UserId).QueryRows(&books)
+	}
+
+	if err != nil {
+		return
+	}
+	return
+}
+
 // 图书首页图书信息
 type BookData struct {
 	BookId         int       `json:"book_id"`

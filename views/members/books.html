@@ -8,14 +8,14 @@
     <title>我的图书 - {{.SITE_NAME}}</title>
 
 
-<!--    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <!--    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
     <link href="{{cdncss "/static/bootstrap/css/bootstrap.min.css"}}" rel="stylesheet">
     <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/static/css/toast.css" rel="stylesheet" type="text/css">
 
     <link href="/static/css/main.css?version={{$.Version}}" rel="stylesheet">
     <script src="/static/html5shiv/3.7.3/html5shiv.min.js"></script>
-<!--    <script src="/static/respond.js/1.4.2/respond.min.js"></script>-->
+    <!--    <script src="/static/respond.js/1.4.2/respond.min.js"></script>-->
     <script src="{{cdnjs "/static/respond.js/1.4.2/respond.min.js"}}"></script>
 </head>
 <body>
@@ -23,8 +23,13 @@
     {{template "widgets/header.html" .}}
     <div class="container manual-body">
         <div class="row">
+            <div class="page-left">
+                <ul class="menu">
+                    <li {{if .SettingBasic}}class="active"{{end}}><a href="{{urlfor "MembersController.Settings" ":id" $.Member.MemberId}}" class="item"><i class="fa fa-sitemap" aria-hidden="true"></i> 基本信息</a> </li>
+                    <li {{if .SettingBook}}class="active"{{end}}><a href="{{urlfor "MembersController.Books" ":id" $.Member.MemberId ":private" 1}}" class="item"><i class="fa fa-sitemap" aria-hidden="true"></i> 我的图书</a> </li>
 
-            {{template "setting/menu.html" .}}
+                </ul>
+            </div>
 
             <div class="page-right">
                 <div class="m-box">
@@ -33,8 +38,8 @@
                         <button type="button" data-toggle="modal" data-target="#addBookDialogModal" class="btn btn-success btn-sm pull-right">添加图书</button>
                     </div>
                     <ul class="nav nav-tabs" style="margin-top: 15px;">
-                        <li {{if eq .Private 1}}class="active"{{end}}><a href="{{urlfor "BookController.Index"}}?private=1">私有图书</a></li>
-                        <li {{if ne .Private 1}}class="active"{{end}}><a href="{{urlfor "BookController.Index"}}?private=0">公开图书</a></li>
+                        <li {{if eq .Private 1}}class="active"{{end}}><a href="{{urlfor "MembersController.Books" ":id" $.Member.MemberId ":private" 1}}">私有图书</a></li>
+                        <li {{if ne .Private 1}}class="active"{{end}}><a href="{{urlfor "MembersController.Books" ":id" $.Member.MemberId ":private" 0}}">公开图书</a></li>
                     </ul>
                 </div>
                 <div class="box-body" id="bookList">
@@ -44,8 +49,8 @@
                         </template>
                         <template v-else>
                             <form target="notarget" style="display: none;" action="{{urlfor "BookController.UploadProject"}}" enctype="multipart/form-data" method="post" id="uploadZip">
-                            <input type="file" name="zipfile" accept="application/zip">
-                            <input type="text" name="identify" value="">
+                                <input type="file" name="zipfile" accept="application/zip">
+                                <input type="text" name="identify" value="">
                             </form>
                             <div class="list-item clearfix" v-for="item in lists">
                                 <div class="col-sm-2 col-xs-12" style="padding-left: 0px">
@@ -83,7 +88,7 @@
                                     <div class="desc-text">
                                         <template v-if="item.description === ''"></template>
                                         <template v-else="">
-                                                ${item.description}
+                                            ${item.description}
                                         </template>
                                     </div>
 
@@ -94,12 +99,12 @@
                                         </template>
                                         <a :href="'/book/' + item.identify + '/setting'" title="图书设置" class="btn btn-default btn-sm" data-toggle="tooltip" target="_blank"><i class="fa fa-cogs"></i> <span class="hidden-xs">图书</span>设置</a>
                                         {{if lt $.Member.Role 2}}
-                                        {{/*<a href="javascript:void(0);" class="btn btn-default btn-upload-zip  btn-sm" data-toggle="tooltip" :data-identify="item.identify" title="支持任意zip压缩的markdown图书导入。">*/}}
+                                            {{/*<a href="javascript:void(0);" class="btn btn-default btn-upload-zip  btn-sm" data-toggle="tooltip" :data-identify="item.identify" title="支持任意zip压缩的markdown图书导入。">*/}}
                                             {{/*<i class="fa fa-cloud-upload"></i> 导入<span class="hidden-xs">图书</span>*/}}
-                                        {{/*</a>*/}}
-                                        {{/*<a href="javascript:void(0);" class="btn btn-default btn-pull-project-by-zip btn-sm" data-toggle="tooltip" :data-identify="item.identify" title="从任意源拉取zip压缩的markdown图书">*/}}
+                                            {{/*</a>*/}}
+                                            {{/*<a href="javascript:void(0);" class="btn btn-default btn-pull-project-by-zip btn-sm" data-toggle="tooltip" :data-identify="item.identify" title="从任意源拉取zip压缩的markdown图书">*/}}
                                             {{/*<i class="fa fa-link"></i> 拉取<span class="hidden-xs">图书</span>*/}}
-                                        {{/*</a>*/}}
+                                            {{/*</a>*/}}
 
                                         {{end}}
                                         <!-- Split button -->
@@ -127,59 +132,59 @@
 <div class="modal fade" id="addBookDialogModal" tabindex="-1" role="dialog" aria-labelledby="addBookDialogModalLabel">
     <div class="modal-dialog" role="document" style="width: 655px">
         <form method="post" autocomplete="off" action="{{urlfor "BookController.Create"}}" id="addBookDialogForm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">添加图书</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="标题(不超过100字)" name="book_name" id="bookName">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">添加图书</h4>
                 </div>
-                <div class="form-group">
-                    <div class="input-group">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="标题(不超过100字)" name="book_name" id="bookName">
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="button">来源名称</button>
                         </span>
-                        <input type="text" placeholder="选填" name="author" id="author" class="form-control">
-                        <span class="input-group-btn">
+                            <input type="text" placeholder="选填" name="author" id="author" class="form-control">
+                            <span class="input-group-btn">
                             <button class="btn btn-default" style="border-left: 0px;border-right: 0px;border-radius: 0px;" type="button">来源链接</button>
                         </span>
-                        <input type="text" placeholder="选填" name="author_url" id="author_url" class="form-control">
+                            <input type="text" placeholder="选填" name="author_url" id="author_url" class="form-control">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="pull-left" style="padding: 7px 5px 6px 0">
-                        {{.BaseUrl}}{{urlfor "DocumentController.Index" ":key" ""}}
+                    <div class="form-group">
+                        <div class="pull-left" style="padding: 7px 5px 6px 0">
+                            {{.BaseUrl}}{{urlfor "DocumentController.Index" ":key" ""}}
+                        </div>
+                        <input type="text" class="form-control pull-left" style="width: 220px;vertical-align: middle" placeholder="图书唯一标识(不能超过50字)" name="identify" id="identify">
+                        <div class="clearfix"></div>
+                        <p class="text" style="font-size: 12px;color: #999;margin-top: 6px;">图书标识只能包含字母、数字，以及“-”、"."和“_”符号，且不能是纯数字</p>
                     </div>
-                    <input type="text" class="form-control pull-left" style="width: 220px;vertical-align: middle" placeholder="图书唯一标识(不能超过50字)" name="identify" id="identify">
+                    <div class="form-group">
+                        <textarea name="description" id="description" class="form-control" placeholder="描述信息不超过500个字符" style="height: 90px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-6">
+                            <label>
+                                <input type="radio" name="privately_owned" value="1" checked> 私有<span class="text">(只有参与者或使用令牌才能访问)</span>
+                            </label>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>
+                                <input type="radio" name="privately_owned" value="0" > 公开<span class="text">(任何人都可以访问)</span>
+                            </label>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
                     <div class="clearfix"></div>
-                    <p class="text" style="font-size: 12px;color: #999;margin-top: 6px;">图书标识只能包含字母、数字，以及“-”、"."和“_”符号，且不能是纯数字</p>
                 </div>
-                <div class="form-group">
-                    <textarea name="description" id="description" class="form-control" placeholder="描述信息不超过500个字符" style="height: 90px;"></textarea>
+                <div class="modal-footer">
+                    <span id="form-error-message"></span>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-success" id="btnSaveDocument" data-loading-text="保存中...">保存</button>
                 </div>
-                <div class="form-group">
-                    <div class="col-lg-6">
-                        <label>
-                            <input type="radio" name="privately_owned" value="1" checked> 私有<span class="text">(只有参与者或使用令牌才能访问)</span>
-                        </label>
-                    </div>
-                    <div class="col-lg-6">
-                        <label>
-                            <input type="radio" name="privately_owned" value="0" > 公开<span class="text">(任何人都可以访问)</span>
-                        </label>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="clearfix"></div>
             </div>
-            <div class="modal-footer">
-                <span id="form-error-message"></span>
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="submit" class="btn btn-success" id="btnSaveDocument" data-loading-text="保存中...">保存</button>
-            </div>
-        </div>
         </form>
     </div>
 </div><!--END Modal-->
@@ -237,11 +242,11 @@
             el : "#bookList",
             data : {
                 lists : {{.Result}}
-    },
-        delimiters : ['${','}'],
+            },
+            delimiters : ['${','}'],
             methods : {
-        }
-    });
+            }
+        });
         Vue.nextTick(function () {
             $("[data-toggle='tooltip']").tooltip();
         });

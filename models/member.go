@@ -75,7 +75,11 @@ func (m *Member) Create() error {
 func (m *Member) Find(id int) (*Member, error) {
 	m.MemberId = id
 	if err := orm.NewOrm().Read(m); err != nil {
-		return m, err
+		//<QuerySeter> no row found
+		if err == orm.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
 	}
 	m.RoleName = common.Role(m.Role)
 	return m, nil
