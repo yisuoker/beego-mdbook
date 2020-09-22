@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"mdbook/models"
+	"strings"
 )
 
 type MembersController struct {
@@ -68,6 +69,26 @@ func (c *MembersController) FollowUpdate() {
 
 func (c *MembersController) Settings() {
 	fmt.Println("members/Settings")
+
+	if c.Ctx.Input.IsPost() {
+		email := strings.TrimSpace(c.GetString("email", ""))
+		phone := strings.TrimSpace(c.GetString("phone", ""))
+		description := strings.TrimSpace(c.GetString("description", ""))
+		if email == "" {
+			c.JsonResult(1, "邮箱不能为空")
+		}
+
+		member := c.Member
+		member.Email = email
+		member.Phone = phone
+		member.Description = description
+		if err := member.Update("email", "phone", "description"); err != nil {
+			c.JsonResult(1, "更新失败")
+		}
+		// 更新用户信息
+		c.SetSessions(*member)
+		c.JsonResult(0, "操作成功")
+	}
 	c.TplName = "members/settings.html"
 }
 
