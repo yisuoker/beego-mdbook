@@ -42,6 +42,63 @@ func (m *Books) TableName() string {
 	return TNBooks()
 }
 
+// 新增
+func (m *Books) Create() (err error) {
+	// TODO 事务
+	if _, err = orm.NewOrm().Insert(m); err != nil {
+		return
+	}
+
+	//relationship
+	relationship := Relationship{
+		BookId:   m.BookId,
+		MemberId: m.MemberId,
+		RoleId:   0,
+	}
+	if err = relationship.Create(); err != nil {
+		return
+	}
+
+	////document
+	//document := Documents{
+	//	BookId:       m.BookId,
+	//	DocumentName: "空白文档",
+	//	Identify:     "blank",
+	//	MemberId:     m.MemberId,
+	//}
+	//var id int64
+	//if id, err = document.CreateOrUpdate(); err == nil {
+	//	//document_store
+	//	documentStore := DocumentStore{
+	//		DocumentId: int(id),
+	//		Markdown:   "",
+	//	}
+	//	err = documentStore.CreateOrUpdate()
+	//}
+	return
+}
+
+// 查询
+func (m *Books) Get(id int) (book *Books, err error) {
+	m.BookId = id
+	if err := orm.NewOrm().Read(m); err != nil {
+		//<QuerySeter> no row found
+		if err == orm.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return m, nil
+}
+
+// 更新
+func (m *Books) Update(cols ...string) (err error) {
+	_, err = orm.NewOrm().Update(m, cols...)
+	return
+}
+
+// 删除
+
 // 根据分类id获取图书列表
 func (m *Books) GetByCategoryId(categoryId int, fields ...string) (books []Books, err error) {
 	if 0 == len(fields) {

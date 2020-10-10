@@ -30,6 +30,12 @@ func init() {
 	// books
 	// TODO urlfor ?:token 正则路由怎么生成
 	beego.Router("/books/:id", &controllers.BooksController{}, "get:Show")
+	beego.Router("/books/:id/collect", &controllers.BooksController{}, "post:CollectStore")
+	beego.Router("/books", &controllers.BooksController{}, "post:Store")
+	beego.Router("/books/:id/edit", &controllers.BooksController{}, "get:Edit")
+	beego.Router("/books/:id", &controllers.BooksController{}, "post:Update")
+	beego.Router("/books/:id/token", &controllers.BooksController{}, "post:TokenUpdate")
+	beego.Router("/books/:id/release", &controllers.BooksController{}, "post:Release")
 
 	// members
 	beego.Router("/members/:id", &controllers.MembersController{}, "get:Index")

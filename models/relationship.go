@@ -1,5 +1,7 @@
 package models
 
+import "github.com/astaxie/beego/orm"
+
 type Relationship struct {
 	RelationshipId int `orm:"pk;auto;" json:"relationship_id"`
 	MemberId       int `json:"member_id"`
@@ -20,4 +22,9 @@ func (m *Relationship) TableUnique() [][]string {
 
 func NewRelationship() *Relationship {
 	return &Relationship{}
+}
+
+func (m *Relationship) Create() (err error) {
+	_, err = orm.NewOrm().Insert(m)
+	return
 }
